@@ -2,19 +2,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catálogo de Produtos</title>
+  <title>Catálogo Shakaw 3D Print</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f9f9f9;
+      margin: 0;
+      background: linear-gradient(to bottom, #f1f1f1, #e0e0e0);
+    }
+    .header {
+      background-color: #fff;
+      text-align: center;
+      padding: 40px 20px 20px;
+      border-bottom: 2px solid #ddd;
+    }
+    .header img {
+      width: 120px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 26px;
+      color: #333;
     }
     .catalog-page {
       display: flex;
       flex-direction: column;
       gap: 30px;
       max-width: 900px;
-      margin: auto;
+      margin: 40px auto;
+      padding: 0 20px;
     }
     .product {
       display: flex;
@@ -49,63 +66,94 @@
       font-weight: bold;
       color: #009688;
     }
+    .footer {
+      text-align: center;
+      margin: 40px 0 20px;
+    }
+    .instagram-button {
+      display: inline-flex;
+      align-items: center;
+      background-color: #E1306C;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .instagram-button:hover {
+      background-color: #c3225c;
+    }
+    .instagram-button svg {
+      margin-right: 8px;
+    }
   </style>
 </head>
 <body>
-  <div class="catalog-page">
+  <div class="header">
+    <img src="https://instagram.fsdu3-1.fna.fbcdn.net/v/t51.2885-19/428893753_122336070189587686_1281224579613174032_n.jpg?stp=dst-jpg_s320x320&_nc_ht=instagram.fsdu3-1.fna.fbcdn.net&_nc_cat=109&_nc_ohc=6VRWVmzjXEcAX90vl5U&edm=ACWDqb8BAAAA&ccb=7-5&oh=00_AfD9pC3RtPUpJ8f5Ox1ZJdB2Epya_oD_GW8RUS1cFP9qzQ&oe=661775A8&_nc_sid=ee9879" alt="Logo Shakaw 3D Print">
+    <h1>Shakaw 3D Print</h1>
+  </div>  <div class="catalog-page">
+    <!-- Produtos aqui (mantidos os mesmos) -->
     <!-- Produto 1 -->
     <div class="product">
-      <img src="https://shakaw67.github.io/Shakaw3DPrint/01.jpeg" alt="001">
+      <img src="https://shakaw67.github.io/Shakaw3DPrint/01.jpeg" alt="Produto 1">
       <div class="product-details">
         <h2>Produto 1</h2>
         <p><strong>Código:</strong> 001</p>
-        <p><strong>Descrição:</strong> Miniatura em resina com pintura a mão em escala 1/18. <br> Tamanho aproximado entre 8cm e 11cm</p>
-        <p class="price">R$ 60,00</p>
+        <p><strong>Descrição:</strong> Descrição do produto 1 com detalhes e características.</p>
+        <p class="price">R$ 100,00</p>
       </div>
-    </div><!-- Produto 2 -->
-<div class="product">
-  <img src="https://via.placeholder.com/250" alt="Produto 2">
-  <div class="product-details">
-    <h2>Produto 2</h2>
-    <p><strong>Código:</strong> 002</p>
-    <p><strong>Descrição:</strong> Descrição do produto 2 com detalhes e características.</p>
-    <p class="price">R$ 120,00</p>
-  </div>
-</div>
-
-<!-- Produto 3 -->
-<div class="product">
-  <img src="https://via.placeholder.com/250" alt="Produto 3">
-  <div class="product-details">
-    <h2>Produto 3</h2>
-    <p><strong>Código:</strong> 003</p>
-    <p><strong>Descrição:</strong> Descrição do produto 3 com detalhes e características.</p>
-    <p class="price">R$ 150,00</p>
-  </div>
-</div>
-
-<!-- Produto 4 -->
-<div class="product">
-  <img src="https://via.placeholder.com/250" alt="Produto 4">
-  <div class="product-details">
-    <h2>Produto 4</h2>
-    <p><strong>Código:</strong> 004</p>
-    <p><strong>Descrição:</strong> Descrição do produto 4 com detalhes e características.</p>
-    <p class="price">R$ 80,00</p>
-  </div>
-</div>
-
-<!-- Produto 5 -->
-<div class="product">
-  <img src="https://via.placeholder.com/250" alt="Produto 5">
-  <div class="product-details">
-    <h2>Produto 5</h2>
-    <p><strong>Código:</strong> 005</p>
-    <p><strong>Descrição:</strong> Descrição do produto 5 com detalhes e características.</p>
-    <p class="price">R$ 90,00</p>
-  </div>
-</div>
-
+    </div>
+    <!-- Produto 2 -->
+    <div class="product">
+      <img src="https://via.placeholder.com/250" alt="Produto 2">
+      <div class="product-details">
+        <h2>Produto 2</h2>
+        <p><strong>Código:</strong> 002</p>
+        <p><strong>Descrição:</strong> Descrição do produto 2 com detalhes e características.</p>
+        <p class="price">R$ 120,00</p>
+      </div>
+    </div>
+    <!-- Produto 3 -->
+    <div class="product">
+      <img src="https://via.placeholder.com/250" alt="Produto 3">
+      <div class="product-details">
+        <h2>Produto 3</h2>
+        <p><strong>Código:</strong> 003</p>
+        <p><strong>Descrição:</strong> Descrição do produto 3 com detalhes e características.</p>
+        <p class="price">R$ 150,00</p>
+      </div>
+    </div>
+    <!-- Produto 4 -->
+    <div class="product">
+      <img src="https://via.placeholder.com/250" alt="Produto 4">
+      <div class="product-details">
+        <h2>Produto 4</h2>
+        <p><strong>Código:</strong> 004</p>
+        <p><strong>Descrição:</strong> Descrição do produto 4 com detalhes e características.</p>
+        <p class="price">R$ 80,00</p>
+      </div>
+    </div>
+    <!-- Produto 5 -->
+    <div class="product">
+      <img src="https://via.placeholder.com/250" alt="Produto 5">
+      <div class="product-details">
+        <h2>Produto 5</h2>
+        <p><strong>Código:</strong> 005</p>
+        <p><strong>Descrição:</strong> Descrição do produto 5 com detalhes e características.</p>
+        <p class="price">R$ 90,00</p>
+      </div>
+    </div>
+  </div>  <div class="footer">
+    <a class="instagram-button" href="https://www.instagram.com/shakaw3dprint" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line>
+      </svg>
+      @shakaw3dprint
+    </a>
   </div>
 </body>
 </html>
