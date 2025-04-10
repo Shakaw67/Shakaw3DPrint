@@ -8,9 +8,10 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background: linear-gradient(to bottom, #0057b7, #00aaff);
+      background: linear-gradient(to bottom, #cce6ff, #e6f0ff);
     }
     .header {
+      background: linear-gradient(90deg, #0057b7, #00aaff);
       text-align: center;
       padding: 40px 20px 20px;
       color: white;
@@ -58,13 +59,11 @@
     }
     .product img {
       width: 100%;
+      max-width: 250px;
       height: auto;
       object-fit: cover;
       cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .product img:hover {
-      transform: scale(1.02);
+      align-self: center;
     }
     .product-details {
       padding: 20px;
@@ -82,42 +81,61 @@
       font-weight: bold;
       color: #009688;
     }
-    @media (min-width: 600px) {
-      .product {
-        flex-direction: row;
-      }
-      .product img {
-        width: 250px;
-        height: 250px;
-      }
-    }
     .modal {
       display: none;
       position: fixed;
-      z-index: 9999;
+      z-index: 1000;
       left: 0;
       top: 0;
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgba(0,0,0,0.9);
+      background-color: rgba(0,0,0,0.8);
     }
-    .modal-content {
-      margin: 10% auto;
+    .modal img {
       display: block;
+      margin: 50px auto;
       max-width: 90%;
+      max-height: 80vh;
     }
-    .modal-content img {
-      width: 100%;
+    .modal:target {
+      display: block;
     }
-    .close {
-      position: absolute;
-      top: 20px;
-      right: 35px;
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #0057b7;
       color: white;
-      font-size: 40px;
-      font-weight: bold;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 50px;
+      font-size: 14px;
       cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      z-index: 999;
+      transition: background 0.3s;
+    }
+    .back-to-top:hover {
+      background-color: #003f8a;
+    }
+    .footer {
+      text-align: center;
+      padding: 40px 20px 60px;
+    }
+    .footer a {
+      color: #0057b7;
+      font-weight: bold;
+      text-decoration: none;
+      background-color: #fff;
+      padding: 10px 20px;
+      border-radius: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+    .footer a:hover {
+      background-color: #0057b7;
+      color: #fff;
     }
   </style>
 </head>
@@ -127,23 +145,21 @@
     <h1>Shakaw 3D Print</h1>
     <a href="https://www.instagram.com/shakaw3dprint" target="_blank">@shakaw3dprint</a>
   </div>
-  <div class="catalog-page">
-    <!-- Produtos -->
-    
-    <!-- Inserir produtos automaticamente via JS -->
+
+  <div class="catalog-page" id="catalog"></div>
+
+  <div class="modal" id="imgModal" onclick="this.style.display='none'">
+    <img id="modalImg" src="" alt="Imagem Ampliada">
   </div>
 
-  <!-- Modal para visualização das imagens -->
-  <div id="imgModal" class="modal">
-    <span class="close" onclick="document.getElementById('imgModal').style.display='none'">&times;</span>
-    <div class="modal-content">
-      <img id="modalImg" src="" alt="Imagem ampliada">
-    </div>
+  <button class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">Topo ↑</button>
+
+  <div class="footer">
+    <a href="https://www.instagram.com/shakaw3dprint" target="_blank">@shakaw3dprint</a>
   </div>
 
   <script>
-    const catalog = document.querySelector('.catalog-page');
-
+    const catalog = document.getElementById('catalog');
     for (let i = 1; i <= 80; i++) {
       const index = i.toString().padStart(2, '0');
       const product = document.createElement('div');
@@ -159,11 +175,20 @@
 
       const details = document.createElement('div');
       details.className = 'product-details';
+
+      let descricao = 'Modelo <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura.';
+      let preco = 'R$ 60,00';
+
+      if (i === 60) {
+        descricao = 'Modelo <br> Imagem Real <br> Escala 1/18.';
+        preco = 'R$ 90,00';
+      }
+
       details.innerHTML = `
         <h2>Produto ${i}</h2>
         <p><strong>Código:</strong> ${index}</p>
-        <p><strong>Descrição:</strong> Modelo <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura.</p>
-        <p class="price">R$ 60,00</p>
+        <p><strong>Descrição:</strong> ${descricao}</p>
+        <p class="price">${preco}</p>
       `;
 
       product.appendChild(img);
@@ -173,40 +198,3 @@
   </script>
 </body>
 </html>
-for (let i = 1; i <= 80; i++) {
-  const index = i.toString().padStart(2, '0');
-  const product = document.createElement('div');
-  product.className = 'product';
-
-  const img = document.createElement('img');
-  img.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
-  img.alt = `Produto ${i}`;
-  img.onclick = function() {
-    document.getElementById('imgModal').style.display = 'block';
-    document.getElementById('modalImg').src = this.src;
-  };
-
-  const details = document.createElement('div');
-  details.className = 'product-details';
-
-  // Descrição e preço padrão
-  let descricao = 'Modelo <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura.';
-  let preco = 'R$ 60,00';
-
-  // Personalização para o produto 60
-  if (i === 60) {
-    descricao = 'Modelo <br> Imagem Real <br> Escala 1/18.';
-    preco = 'R$ 90,00';
-  }
-
-  details.innerHTML = `
-    <h2>Produto ${i}</h2>
-    <p><strong>Código:</strong> ${index}</p>
-    <p><strong>Descrição:</strong> ${descricao}</p>
-    <p class="price">${preco}</p>
-  `;
-
-  product.appendChild(img);
-  product.appendChild(details);
-  catalog.appendChild(product);
-}
