@@ -5,16 +5,171 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Catálogo Shakaw 3D Print</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background: linear-gradient(to bottom, #004aad, #0088cc, #00c0ff);
+      background: linear-gradient(to bottom, #0057b7, #00aaff);
     }
-
     .header {
-      background: linear-gradient(90deg, #0057b7, #00aaff);
-      text-align: center
+      text-align: center;
+      padding: 40px 20px 20px;
+      color: white;
+    }
+    .header img {
+      width: 120px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      border: 4px solid white;
+    }
+    .header h1 {
+      margin: 10px 0 5px;
+      font-size: 28px;
+    }
+    .header a {
+      display: inline-block;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      margin-top: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 6px 12px;
+      border-radius: 20px;
+      transition: background 0.3s;
+    }
+    .header a:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .catalog-page {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .product {
+      display: flex;
+      flex-direction: column;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .product img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .product img:hover {
+      transform: scale(1.02);
+    }
+    .product-details {
+      padding: 20px;
+    }
+    .product-details h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+    .product-details p {
+      margin: 5px 0;
+      color: #333;
+    }
+    .price {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #009688;
+    }
+    @media (min-width: 600px) {
+      .product {
+        flex-direction: row;
+      }
+      .product img {
+        width: 250px;
+        height: 250px;
+      }
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.9);
+    }
+    .modal-content {
+      margin: 10% auto;
+      display: block;
+      max-width: 90%;
+    }
+    .modal-content img {
+      width: 100%;
+    }
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="https://shakaw67.github.io/Shakaw3DPrint/Logo.PNG" alt="Logo Shakaw 3D Print">
+    <h1>Shakaw 3D Print</h1>
+    <a href="https://www.instagram.com/shakaw3dprint" target="_blank">@shakaw3dprint</a>
+  </div>
+  <div class="catalog-page">
+    <!-- Produtos -->
+    
+    <!-- Inserir produtos automaticamente via JS -->
+  </div>
+
+  <!-- Modal para visualização das imagens -->
+  <div id="imgModal" class="modal">
+    <span class="close" onclick="document.getElementById('imgModal').style.display='none'">&times;</span>
+    <div class="modal-content">
+      <img id="modalImg" src="" alt="Imagem ampliada">
+    </div>
+  </div>
+
+  <script>
+    const catalog = document.querySelector('.catalog-page');
+
+    for (let i = 1; i <= 80; i++) {
+      const index = i.toString().padStart(2, '0');
+      const product = document.createElement('div');
+      product.className = 'product';
+
+      const img = document.createElement('img');
+      img.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
+      img.alt = `Produto ${i}`;
+      img.onclick = function() {
+        document.getElementById('imgModal').style.display = 'block';
+        document.getElementById('modalImg').src = this.src;
+      };
+
+      const details = document.createElement('div');
+      details.className = 'product-details';
+      details.innerHTML = `
+        <h2>Produto ${i}</h2>
+        <p><strong>Código:</strong> ${index}</p>
+        <p><strong>Descrição:</strong> Modelo <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura.</p>
+        <p class="price">R$ 60,00</p>
+      `;
+
+      product.appendChild(img);
+      product.appendChild(details);
+      catalog.appendChild(product);
+    }
+  </script>
+</body>
+</html>
