@@ -1,149 +1,52 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catálogo Shakaw 3D Print</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: linear-gradient(to bottom, #0057b7, #00aaff);
-    }
-    .header {
-      text-align: center;
-      padding: 40px 20px 20px;
-      color: white;
-    }
-    .header img {
-      width: 180px;
-      border-radius: 50%;
-      margin-bottom: 10px;
-      border: 4px solid white;
-    }
-    .header h1 {
-      margin: 10px 0 5px;
-      font-size: 28px;
-    }
-    .header a {
-      display: inline-block;
-      color: white;
-      font-weight: bold;
-      text-decoration: none;
-      margin-top: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 6px 12px;
-      border-radius: 20px;
-      transition: background 0.3s;
-    }
-    .header a:hover {
-      background: rgba(255, 255, 255, 0.25);
-    }
-    .catalog-page {
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    .product {
-      display: flex;
-      flex-direction: row;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .product img.main-img {
-      width: 300px;
-      height: 300px;
-      object-fit: contain;
-      background-color: #f5f5f5;
-      padding: 10px;
-      cursor: pointer;
-      transition: transform 0.2s;
-      flex-shrink: 0;
-    }
-    .product img:hover {
-      transform: scale(1.02);
-    }
-    .product-details {
-      padding: 20px;
-      flex: 1;
-      max-width: 50%;
-    }
-    .product-details h2 {
-      margin: 0 0 10px;
-      font-size: 20px;
-    }
-    .product-details p {
-      margin: 5px 0;
-      color: #333;
-    }
-    .price {
-      margin-top: 10px;
-      font-weight: bold;
-      color: #009688;
-    }
-    .thumbnail-container {
-      display: flex;
-      gap: 5px;
-      margin-top: 10px;
-    }
-    .thumbnail-container img {
-      width: 50px;
-      height: 50px;
-      object-fit: cover;
-      border: 1px solid #ccc;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .thumbnail-container img:hover {
-      border-color: #0077cc;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.9);
-    }
-    .modal-content {
-      margin: 10% auto;
-      display: block;
-      max-width: 90%;
-    }
-    .modal-content img {
-      width: 100%;
-    }
-    .close {
-      position: absolute;
-      top: 20px;
-      right: 35px;
-      color: white;
-      font-size: 40px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <img src="https://shakaw67.github.io/Shakaw3DPrint/Logo.PNG" alt="Logo Shakaw 3D Print">
-    <h1>Shakaw 3D Print</h1>
-    <a href="https://www.instagram.com/shakaw3dprint" target="_blank">@shakaw3dprint</a>
-  </div>
-  <div class="catalog-page">
-    <!-- Produtos -->
-  </div>
+<!-- Mantém o mesmo cabeçalho e estilos anteriores -->
+<!-- Atualizações importantes estão marcadas com COMENTÁRIOS -->
 
-  <!-- Modal para visualização das imagens -->
+<!-- ... início do <head> ... -->
+<style>
+  /* ... estilos anteriores ... */
+
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .nav-buttons button {
+    padding: 6px 12px;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .nav-buttons button:hover {
+    background-color: #005fa3;
+  }
+
+  /* Botão de voltar ao topo */
+  #backToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 50px;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    z-index: 1000;
+  }
+</style>
+<!-- ... fim do <head> ... -->
+
+<body>
+  <!-- ... cabeçalho e container ... -->
+
+  <div class="catalog-page" id="catalog"></div>
+
+  <!-- Modal para visualização -->
   <div id="imgModal" class="modal">
     <span class="close" onclick="document.getElementById('imgModal').style.display='none'">&times;</span>
     <div class="modal-content">
@@ -151,8 +54,11 @@
     </div>
   </div>
 
+  <!-- Botão de voltar ao topo -->
+  <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">↑ Topo</button>
+
   <script>
-    const catalog = document.querySelector('.catalog-page');
+    const catalog = document.getElementById('catalog');
 
     for (let i = 1; i <= 80; i++) {
       const index = i.toString().padStart(2, '0');
@@ -163,7 +69,9 @@
       mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
       mainImg.alt = `Produto ${i}`;
       mainImg.className = 'main-img';
-      mainImg.onclick = function() {
+      mainImg.dataset.index = index;
+      mainImg.dataset.imgNumber = "0"; // 0 = imagem principal
+      mainImg.onclick = function () {
         document.getElementById('imgModal').style.display = 'block';
         document.getElementById('modalImg').src = this.src;
       };
@@ -178,19 +86,6 @@
         preco = 'R$ 90,00';
       }
 
-      const thumbs = document.createElement('div');
-      thumbs.className = 'thumbnail-container';
-      for (let j = 1; j <= 3; j++) {
-        const thumb = document.createElement('img');
-        thumb.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${j}.PNG`;
-        thumb.alt = `Produto ${i} ângulo ${j}`;
-        thumb.onerror = function() { this.style.display = 'none'; };
-        thumb.onclick = function() {
-          mainImg.src = this.src;
-        };
-        thumbs.appendChild(thumb);
-      }
-
       details.innerHTML = `
         <h2>Produto ${i}</h2>
         <p><strong>Código:</strong> ${index}</p>
@@ -198,11 +93,53 @@
         <p class="price">${preco}</p>
       `;
 
-      details.appendChild(thumbs);
+      // Botões anterior/próxima
+      const nav = document.createElement('div');
+      nav.className = 'nav-buttons';
+
+      const btnPrev = document.createElement('button');
+      btnPrev.innerText = '◀ Anterior';
+      btnPrev.onclick = function () {
+        const current = parseInt(mainImg.dataset.imgNumber);
+        const next = current - 1;
+        let newSrc = next === 0
+          ? `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`
+          : `https://shakaw67.github.io/Shakaw3DPrint/${index}_${next}.PNG`;
+
+        checkImage(newSrc, () => {
+          mainImg.src = newSrc;
+          mainImg.dataset.imgNumber = next;
+        });
+      };
+
+      const btnNext = document.createElement('button');
+      btnNext.innerText = 'Próxima ▶';
+      btnNext.onclick = function () {
+        const current = parseInt(mainImg.dataset.imgNumber);
+        const next = current + 1;
+        const newSrc = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${next}.PNG`;
+
+        checkImage(newSrc, () => {
+          mainImg.src = newSrc;
+          mainImg.dataset.imgNumber = next;
+        });
+      };
+
+      nav.appendChild(btnPrev);
+      nav.appendChild(btnNext);
+      details.appendChild(nav);
+
       product.appendChild(mainImg);
       product.appendChild(details);
       catalog.appendChild(product);
     }
+
+    // Verifica se imagem existe antes de trocar
+    function checkImage(src, callback) {
+      const img = new Image();
+      img.onload = () => callback();
+      img.onerror = () => {};
+      img.src = src;
+    }
   </script>
 </body>
-</html>
