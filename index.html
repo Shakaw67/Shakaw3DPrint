@@ -188,13 +188,21 @@
       const thumbnails = document.createElement('div');
       thumbnails.className = 'thumbnail-container';
 
-      // Loop pelas imagens de 1 a 5
+      // Adiciona imagem principal como primeira miniatura
+      const mainThumb = document.createElement('img');
+      mainThumb.src = mainImg.src;
+      mainThumb.alt = `Produto ${i} ângulo 0`;
+      mainThumb.onclick = function () {
+        mainImg.src = this.src;
+      };
+      thumbnails.appendChild(mainThumb);
+
+      // Adiciona miniaturas de _1 até _5, se existirem
       for (let j = 1; j <= 5; j++) {
-        const suffix = j === 1 ? '' : `_${j}`;
         const thumb = document.createElement('img');
-        thumb.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}${suffix}.PNG`;
+        thumb.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${j}.PNG`;
         thumb.alt = `Produto ${i} ângulo ${j}`;
-        thumb.onerror = function () { this.style.display = 'none'; };
+        thumb.onerror = function () { this.remove(); };
         thumb.onclick = function () {
           mainImg.src = this.src;
         };
