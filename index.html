@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo Shakaw 3D Print</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom, #0057b7, #00aaff);
+    }
+    .header {
+      text-align: center;
+      padding: 40px 20px 20px;
+      color: white;
+    }
+    .header img {
+      width: 180px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      border: 4px solid white;
+    }
+    .header h1 {
+      margin: 10px 0 5px;
+      font-size: 28px;
+    }
+    .header a {
+      display: inline-block;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      margin-top: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 6px 12px;
+      border-radius: 20px;
+      transition: background 0.3s;
+    }
+    .header a:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .catalog-page {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .product {
+      display: flex;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .image-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      background-color: #f5f5f5;
+    }
+    .product img.main-img {
+      width: 300px;
+      height: 300px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .nav-buttons button {
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .nav-buttons button:hover {
+      background-color: #005fa3;
+    }
+    .product-details {
+      padding: 20px;
+      flex: 1;
+    }
+    .product-details h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+    .product-details p {
+      margin: 5px 0;
+      color: #333;
+    }
+    .price {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #009688;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="https://shakaw67.github.io/Shakaw3DPrint/Logo.PNG" alt="Logo Shakaw 3D Print">
+    <h1>Shakaw 3D Print</h1>
+    <a href="https://www.instagram.com/shakaw3dprint" target="_blank">@shakaw3dprint</a>
+  </div>
+  <div class="catalog-page" id="catalog"></div>
+
+  <script>
+    const catalog = document.getElementById('catalog');
+
+    for (let i = 1; i <= 80; i++) {
+      const index = i.toString().padStart(2, '0');
+      const container = document.createElement('div');
+      container.className = 'product';
+
+      const imageWrapper = document.createElement('div');
+      imageWrapper.className = 'image-wrapper';
+
+      const img = document.createElement('img');
+      img.className = 'main-img';
+      img.dataset.index = index;
+      img.dataset.current = 1;
+      img.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
+
+      const nav = document.createElement('div');
+      nav.className = 'nav-buttons';
+
+      const prevBtn = document.createElement('button');
+      prevBtn.textContent = 'Anterior';
+      const nextBtn = document.createElement('button');
+      nextBtn.textContent = 'Próximo';
+
+      prevBtn.onclick = () => changeImage(img, -1);
+      nextBtn.onclick = () => changeImage(img, 1);
+
+      nav.appendChild(prevBtn);
+      nav.appendChild(nextBtn);
+      imageWrapper.appendChild(img);
+      imageWrapper.appendChild(nav);
+
+      const details = document.createElement('div');
+      details.className = 'product-details';
+
+      let descricao = `Modelo <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura.`;
+      let preco = 'R$ 60,00';
+      if (i === 60) {
+        descricao = `Modelo <br> Imagem Real <br> Escala 1/18.`;
+        preco = 'R$ 90,00';
+      }
+
+      details.innerHTML = `
+        <h2>Produto ${i}</h2>
+        <p><strong>Código:</strong> ${index}</p>
+        <p><strong>Descrição:</strong> ${descricao}</p>
+        <p class="price">${preco}</p>
+      `;
+
+      container.appendChild(imageWrapper);
+      container.appendChild(details);
+      catalog.appendChild(container);
+    }
+
+    function changeImage(img, direction) {
+      const index = img.dataset.index;
+      let current = parseInt(img.dataset.current);
+      const max = 5;
+
+      let next = current + direction;
+      if (next > max) next = 1;
+      if (next < 1) next = max;
+
+      img.dataset.current = next;
+      img.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${next}.PNG`;
+    }
+  </script>
+</body>
+</html>
