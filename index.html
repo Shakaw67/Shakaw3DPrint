@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -50,44 +49,25 @@
     }
     .product {
       display: flex;
+      flex-direction: row;
       background-color: #fff;
       border: 1px solid #ddd;
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    .image-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 10px;
-      background-color: #f5f5f5;
-    }
     .product img.main-img {
       width: 300px;
       height: 300px;
       object-fit: contain;
-      margin-bottom: 10px;
-    }
-    .nav-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
-    .nav-buttons button {
-      background-color: #0077cc;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .nav-buttons button:hover {
-      background-color: #005fa3;
+      background-color: #f5f5f5;
+      padding: 10px;
+      flex-shrink: 0;
     }
     .product-details {
       padding: 20px;
       flex: 1;
+      max-width: 50%;
     }
     .product-details h2 {
       margin: 0 0 10px;
@@ -102,6 +82,40 @@
       font-weight: bold;
       color: #009688;
     }
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .nav-buttons button {
+      background-color: #eee;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .nav-buttons button:hover {
+      background-color: #ddd;
+    }
+    .top-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #0057b7;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      z-index: 999;
+    }
+    .top-button:hover {
+      background-color: #003f8a;
+    }
   </style>
 </head>
 <body>
@@ -110,40 +124,50 @@
     <h1>Shakaw 3D Print</h1>
     <a href="https://www.instagram.com/shakaw3dprint" target="_blank">@shakaw3dprint</a>
   </div>
+
   <div class="catalog-page" id="catalog"></div>
+
+  <button class="top-button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">↑</button>
 
   <script>
     const catalog = document.getElementById('catalog');
 
     for (let i = 1; i <= 80; i++) {
       const index = i.toString().padStart(2, '0');
-      const container = document.createElement('div');
-      container.className = 'product';
+      const product = document.createElement('div');
+      product.className = 'product';
 
-      const imageWrapper = document.createElement('div');
-      imageWrapper.className = 'image-wrapper';
+      const mainImg = document.createElement('img');
+      mainImg.className = 'main-img';
 
-      const img = document.createElement('img');
-      img.className = 'main-img';
-      img.dataset.index = index;
-      img.dataset.current = 1;
-      img.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
+      let currentImg = 1;
+      const maxImgs = 5;
+      const updateImage = () => {
+        mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${currentImg}.PNG`;
+        mainImg.onerror = () => {
+          mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
+        };
+      };
+      updateImage();
+
+      const prevBtn = document.createElement('button');
+      prevBtn.textContent = '<';
+      prevBtn.onclick = () => {
+        currentImg = currentImg > 1 ? currentImg - 1 : maxImgs;
+        updateImage();
+      };
+
+      const nextBtn = document.createElement('button');
+      nextBtn.textContent = '>';
+      nextBtn.onclick = () => {
+        currentImg = currentImg < maxImgs ? currentImg + 1 : 1;
+        updateImage();
+      };
 
       const nav = document.createElement('div');
       nav.className = 'nav-buttons';
-
-      const prevBtn = document.createElement('button');
-      prevBtn.textContent = 'Anterior';
-      const nextBtn = document.createElement('button');
-      nextBtn.textContent = 'Próximo';
-
-      prevBtn.onclick = () => changeImage(img, -1);
-      nextBtn.onclick = () => changeImage(img, 1);
-
       nav.appendChild(prevBtn);
       nav.appendChild(nextBtn);
-      imageWrapper.appendChild(img);
-      imageWrapper.appendChild(nav);
 
       const details = document.createElement('div');
       details.className = 'product-details';
@@ -162,22 +186,10 @@
         <p class="price">${preco}</p>
       `;
 
-      container.appendChild(imageWrapper);
-      container.appendChild(details);
-      catalog.appendChild(container);
-    }
-
-    function changeImage(img, direction) {
-      const index = img.dataset.index;
-      let current = parseInt(img.dataset.current);
-      const max = 5;
-
-      let next = current + direction;
-      if (next > max) next = 1;
-      if (next < 1) next = max;
-
-      img.dataset.current = next;
-      img.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${next}.PNG`;
+      details.appendChild(nav);
+      product.appendChild(mainImg);
+      product.appendChild(details);
+      catalog.appendChild(product);
     }
   </script>
 </body>
