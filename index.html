@@ -250,8 +250,14 @@
   <p><strong>Código:</strong> ${index}</p>
   <p><strong>Descrição:</strong> ${descricao}</p>
   <p class="price">${preco}</p>
-  ${thumbnails.outerHTML}
 `;
+
+// Só adiciona o container de miniaturas se ele tiver pelo menos uma imagem válida
+setTimeout(() => {
+  if (thumbnails.children.length > 0) {
+    details.appendChild(thumbnails);
+  }
+}, 0);
 
       product.appendChild(imageColumn);
       product.appendChild(details);
