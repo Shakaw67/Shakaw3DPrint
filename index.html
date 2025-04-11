@@ -194,80 +194,68 @@
   <button id="topBtn" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">↑</button>
 
   <script>
-    const catalog = document.querySelector('.catalog-page');
+    const catalog = document.getElementById('catalog');
 
-  for (let i = 1; i <= 80; i++) {
-    const index = i.toString().padStart(2, '0');
-    const product = document.createElement('div');
-    product.className = 'product';
+    for (let i = 1; i <= 80; i++) {
+      const index = i.toString().padStart(2, '0');
+      const descricao = i === 60
+        ? 'Modelo <br> Imagem Real <br> Escala 1/18.'
+        : 'Modelo <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura.';
+      const preco = i === 60 ? 'R$ 90,00' : 'R$ 60,00';
 
-    const mainImg = document.createElement('img');
-    mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
-    mainImg.alt = `Produto ${i}`;
-    mainImg.className = 'main-img';
-    mainImg.onclick = function () {
-      document.getElementById('imgModal').style.display = 'block';
-      document.getElementById('modalImg').src = this.src;
-    };
+      const product = document.createElement('div');
+      product.className = 'product';
 
-    const details = document.createElement('div');
-    details.className = 'product-details';
+      const imgContainer = document.createElement('div');
+      imgContainer.className = 'image-container';
 
-    let descricao = `Modelo <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura.`;
-    let preco = 'R$ 60,00';
-    if (i === 60) {
-      descricao = `Modelo <br> Imagem Real <br> Escala 1/18.`;
-      preco = 'R$ 90,00';
-    }
-
-    const imgList = [];
-    for (let j = 1; j <= 5; j++) {
-      const img = new Image();
-      img.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${j}.PNG`;
-      img.onerror = function () {
-        imgList.length = j - 1; // Limita as imagens ao que existe
+      const mainImg = document.createElement('img');
+      mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
+      mainImg.className = 'main-img';
+      mainImg.alt = `Produto ${i}`;
+      mainImg.onclick = () => {
+        document.getElementById('imgModal').style.display = 'block';
+        document.getElementById('modalImg').src = mainImg.src;
       };
-      imgList.push(img.src);
+      imgContainer.appendChild(mainImg);
+
+      let currentImg = 1;
+      const maxImgs = 5;
+
+      const nav = document.createElement('div');
+      nav.className = 'nav-buttons';
+
+      const btnPrev = document.createElement('button');
+      btnPrev.innerHTML = '&lt;';
+      btnPrev.onclick = () => {
+        currentImg = currentImg - 1 < 1 ? maxImgs : currentImg - 1;
+        mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${currentImg}.PNG`;
+      };
+
+      const btnNext = document.createElement('button');
+      btnNext.innerHTML = '&gt;';
+      btnNext.onclick = () => {
+        currentImg = currentImg + 1 > maxImgs ? 1 : currentImg + 1;
+        mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${currentImg}.PNG`;
+      };
+
+      nav.appendChild(btnPrev);
+      nav.appendChild(btnNext);
+      imgContainer.appendChild(nav);
+
+      const details = document.createElement('div');
+      details.className = 'product-details';
+      details.innerHTML = `
+        <h2>Produto ${i}</h2>
+        <p><strong>Código:</strong> ${index}</p>
+        <p><strong>Descrição:</strong> ${descricao}</p>
+        <p class="price">${preco}</p>
+      `;
+
+      product.appendChild(imgContainer);
+      product.appendChild(details);
+      catalog.appendChild(product);
     }
-
-    let currentIndex = 0;
-
-    const controls = document.createElement('div');
-    controls.className = 'controls';
-    controls.style.marginTop = '10px';
-
-    const prevBtn = document.createElement('button');
-    prevBtn.innerHTML = '&lt;';
-    prevBtn.onclick = function () {
-      if (imgList.length <= 1) return;
-      currentIndex = (currentIndex - 1 + imgList.length) % imgList.length;
-      mainImg.src = imgList[currentIndex];
-    };
-
-    const nextBtn = document.createElement('button');
-    nextBtn.innerHTML = '&gt;';
-    nextBtn.onclick = function () {
-      if (imgList.length <= 1) return;
-      currentIndex = (currentIndex + 1) % imgList.length;
-      mainImg.src = imgList[currentIndex];
-    };
-
-    controls.appendChild(prevBtn);
-    controls.appendChild(nextBtn);
-
-    details.innerHTML = `
-      <h2>Produto ${i}</h2>
-      <p><strong>Código:</strong> ${index}</p>
-      <p><strong>Descrição:</strong> ${descricao}</p>
-      <p class="price">${preco}</p>
-    `;
-
-    details.appendChild(controls);
-    product.appendChild(mainImg);
-    product.appendChild(details);
-    catalog.appendChild(product);
-  }
-</script>
-
+  </script>
 </body>
 </html>
