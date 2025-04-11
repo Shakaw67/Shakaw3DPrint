@@ -49,14 +49,20 @@
     }
     .product {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: row;
       background-color: #fff;
       border: 1px solid #ddd;
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    .product img.main-img {
+    .image-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .main-img {
       width: 300px;
       height: 300px;
       object-fit: contain;
@@ -64,16 +70,31 @@
       padding: 10px;
       cursor: pointer;
       transition: transform 0.2s;
-      flex-shrink: 0;
     }
-    .product img:hover {
+    .main-img:hover {
       transform: scale(1.02);
+    }
+    .thumbnail-container {
+      display: flex;
+      gap: 5px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .thumbnail-container img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .thumbnail-container img:hover {
+      border-color: #0077cc;
     }
     .product-details {
       padding: 20px;
       flex: 1;
-      max-width: 50%;
-      min-width: 250px;
     }
     .product-details h2 {
       margin: 0 0 10px;
@@ -87,23 +108,6 @@
       margin-top: 10px;
       font-weight: bold;
       color: #009688;
-    }
-    .thumbnail-container {
-      display: flex;
-      gap: 5px;
-      margin-top: 10px;
-      padding: 0 10px 10px;
-    }
-    .thumbnail-container img {
-      width: 50px;
-      height: 50px;
-      object-fit: cover;
-      border: 1px solid #ccc;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .thumbnail-container img:hover {
-      border-color: #0077cc;
     }
     .modal {
       display: none;
@@ -133,19 +137,14 @@
       font-weight: bold;
       cursor: pointer;
     }
-    .top-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #0077cc;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 10000;
+    @media (max-width: 768px) {
+      .product {
+        flex-direction: column;
+        align-items: center;
+      }
+      .product-details {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
@@ -155,9 +154,9 @@
     <h1>Shakaw 3D Print</h1>
     <a href="https://www.instagram.com/shakaw3dprint" target="_blank">@shakaw3dprint</a>
   </div>
+
   <div class="catalog-page" id="catalog"></div>
 
-  <!-- Modal -->
   <div id="imgModal" class="modal">
     <span class="close" onclick="document.getElementById('imgModal').style.display='none'">&times;</span>
     <div class="modal-content">
@@ -165,25 +164,45 @@
     </div>
   </div>
 
-  <!-- Botão de voltar ao topo -->
-  <button class="top-button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">↑</button>
-
   <script>
-    const catalog = document.getElementById('catalog');
+    const catalog = document.getElementById("catalog");
 
     for (let i = 1; i <= 80; i++) {
       const index = i.toString().padStart(2, '0');
+
       const product = document.createElement('div');
       product.className = 'product';
+
+      const imageColumn = document.createElement('div');
+      imageColumn.className = 'image-column';
 
       const mainImg = document.createElement('img');
       mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
       mainImg.alt = `Produto ${i}`;
       mainImg.className = 'main-img';
-      mainImg.onclick = function() {
+      mainImg.onclick = function () {
         document.getElementById('imgModal').style.display = 'block';
         document.getElementById('modalImg').src = this.src;
       };
+
+      const thumbnails = document.createElement('div');
+      thumbnails.className = 'thumbnail-container';
+
+      // Loop pelas imagens de 1 a 5
+      for (let j = 1; j <= 5; j++) {
+        const suffix = j === 1 ? '' : `_${j}`;
+        const thumb = document.createElement('img');
+        thumb.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}${suffix}.PNG`;
+        thumb.alt = `Produto ${i} ângulo ${j}`;
+        thumb.onerror = function () { this.style.display = 'none'; };
+        thumb.onclick = function () {
+          mainImg.src = this.src;
+        };
+        thumbnails.appendChild(thumb);
+      }
+
+      imageColumn.appendChild(mainImg);
+      imageColumn.appendChild(thumbnails);
 
       const details = document.createElement('div');
       details.className = 'product-details';
@@ -202,23 +221,7 @@
         <p class="price">${preco}</p>
       `;
 
-      // Miniaturas
-      const thumbs = document.createElement('div');
-      thumbs.className = 'thumbnail-container';
-
-      for (let j = 1; j <= 5; j++) {
-        const thumb = document.createElement('img');
-        thumb.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${j}.PNG`;
-        thumb.alt = `Produto ${i} ângulo ${j}`;
-        thumb.onerror = function() { this.style.display = 'none'; };
-        thumb.onclick = function() {
-          mainImg.src = this.src;
-        };
-        thumbs.appendChild(thumb);
-      }
-
-      product.appendChild(mainImg);
-      product.appendChild(thumbs);
+      product.appendChild(imageColumn);
       product.appendChild(details);
       catalog.appendChild(product);
     }
