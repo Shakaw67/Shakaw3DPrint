@@ -234,7 +234,6 @@
       }
 
       imageColumn.appendChild(mainImg);
-      imageColumn.appendChild(thumbnails);
 
       const details = document.createElement('div');
       details.className = 'product-details';
@@ -247,11 +246,12 @@
       }
 
       details.innerHTML = `
-        <h2>Produto ${i}</h2>
-        <p><strong>Código:</strong> ${index}</p>
-        <p><strong>Descrição:</strong> ${descricao}</p>
-        <p class="price">${preco}</p>
-      `;
+  <h2>Produto ${i}</h2>
+  <p><strong>Código:</strong> ${index}</p>
+  <p><strong>Descrição:</strong> ${descricao}</p>
+  <p class="price">${preco}</p>
+  ${thumbnails.outerHTML}
+`;
 
       product.appendChild(imageColumn);
       product.appendChild(details);
