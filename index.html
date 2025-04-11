@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo - Shaka W 3D Print</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+    }
+    header {
+      background: #111;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    .catalog {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+    .item {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 300px;
+      padding: 1rem;
+    }
+    .main-img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    .thumbnails {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .thumbnail {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .thumbnail:hover {
+      border-color: #333;
+    }
+    .details {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #111;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Catálogo - Shaka W 3D Print</h1>
+  </header>
+
+  <section class="catalog">
+    <div class="item">
+      <img src="img/produto01.jpg" id="main-img-1" class="main-img" alt="Produto 01" />
+      <div class="thumbnails">
+        <img src="img/produto01.jpg" class="thumbnail" onclick="document.getElementById('main-img-1').src='img/produto01.jpg'" alt="thumb1">
+        <img src="img/produto01b.jpg" class="thumbnail" onclick="document.getElementById('main-img-1').src='img/produto01b.jpg'" alt="thumb2">
+      </div>
+      <div class="details">
+        <h3>Mecânica + Esteira</h3>
+        <p>Imagem Ilustrativa</p>
+        <p><strong>R$ 60,00</strong></p>
+        <p>Escala 1/18. Tamanho entre 8cm e 11cm de altura.</p>
+      </div>
+    </div>
+
+    <!-- Repita esse bloco acima para os demais produtos -->
+
+  </section>
+
+  <button class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+    ↑
+  </button>
+</body>
+</html>
