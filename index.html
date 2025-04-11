@@ -39,6 +39,7 @@
     .header a:hover {
       background: rgba(255, 255, 255, 0.25);
     }
+
     .catalog-page {
       display: flex;
       flex-direction: column;
@@ -47,80 +48,76 @@
       margin: 40px auto;
       padding: 0 20px;
     }
+
     .product {
       display: flex;
-      flex-direction: row;
+      flex-wrap: wrap;
       background-color: #fff;
       border: 1px solid #ddd;
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+
     .image-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 10px;
     }
+
     .product img.main-img {
       width: 300px;
       height: 300px;
       object-fit: contain;
       background-color: #f5f5f5;
+      padding: 10px;
       cursor: pointer;
     }
+
     .nav-buttons {
       margin-top: 10px;
-      display: flex;
-      gap: 10px;
     }
+
     .nav-buttons button {
-      background-color: #eee;
-      border: 1px solid #ccc;
-      padding: 5px 12px;
+      background: #0077cc;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      margin: 0 5px;
       font-size: 16px;
-      cursor: pointer;
       border-radius: 4px;
+      cursor: pointer;
     }
+
     .nav-buttons button:hover {
-      background-color: #ddd;
+      background-color: #005fa3;
     }
+
     .product-details {
       padding: 20px;
       flex: 1;
-      max-width: 50%;
+      min-width: 250px;
+      max-width: 60%;
     }
+
     .product-details h2 {
       margin: 0 0 10px;
       font-size: 20px;
     }
+
     .product-details p {
       margin: 5px 0;
       color: #333;
     }
+
     .price {
       margin-top: 10px;
       font-weight: bold;
       color: #009688;
     }
-    .top-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #0057b7;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 50%;
-      font-size: 18px;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      z-index: 999;
-    }
-    .top-button:hover {
-      background-color: #003f8a;
-    }
-    .modal {
+
+    #imgModal {
       display: none;
       position: fixed;
       z-index: 9999;
@@ -131,14 +128,13 @@
       overflow: auto;
       background-color: rgba(0,0,0,0.9);
     }
-    .modal-content {
-      margin: 10% auto;
+
+    .modal-content img {
       display: block;
+      margin: 10% auto;
       max-width: 90%;
     }
-    .modal-content img {
-      width: 100%;
-    }
+
     .close {
       position: absolute;
       top: 20px;
@@ -148,9 +144,36 @@
       font-weight: bold;
       cursor: pointer;
     }
+
+    #topBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #005fa3;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    @media (max-width: 768px) {
+      .product {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .product-details {
+        max-width: 100%;
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
+
   <div class="header">
     <img src="https://shakaw67.github.io/Shakaw3DPrint/Logo.PNG" alt="Logo Shakaw 3D Print">
     <h1>Shakaw 3D Print</h1>
@@ -159,77 +182,69 @@
 
   <div class="catalog-page" id="catalog"></div>
 
-  <div id="imgModal" class="modal">
+  <!-- Modal de imagem -->
+  <div id="imgModal">
     <span class="close" onclick="document.getElementById('imgModal').style.display='none'">&times;</span>
     <div class="modal-content">
       <img id="modalImg" src="" alt="Imagem ampliada">
     </div>
   </div>
 
-  <button class="top-button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">↑</button>
+  <!-- Botão de topo -->
+  <button id="topBtn" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">↑</button>
 
   <script>
     const catalog = document.getElementById('catalog');
 
     for (let i = 1; i <= 80; i++) {
       const index = i.toString().padStart(2, '0');
+      const descricao = i === 60
+        ? 'Modelo <br> Imagem Real <br> Escala 1/18.'
+        : 'Modelo <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura.';
+      const preco = i === 60 ? 'R$ 90,00' : 'R$ 60,00';
+
       const product = document.createElement('div');
       product.className = 'product';
 
-      // Container da imagem + navegação
-      const imageContainer = document.createElement('div');
-      imageContainer.className = 'image-container';
+      const imgContainer = document.createElement('div');
+      imgContainer.className = 'image-container';
 
       const mainImg = document.createElement('img');
+      mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
       mainImg.className = 'main-img';
-      let currentImg = 1;
-      const maxImgs = 5;
-
-      const updateImage = () => {
-        mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${currentImg}.PNG`;
-        mainImg.onerror = () => {
-          mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
-        };
-      };
-
+      mainImg.alt = `Produto ${i}`;
       mainImg.onclick = () => {
         document.getElementById('imgModal').style.display = 'block';
         document.getElementById('modalImg').src = mainImg.src;
       };
+      imgContainer.appendChild(mainImg);
 
-      const prevBtn = document.createElement('button');
-      prevBtn.textContent = '<';
-      prevBtn.onclick = () => {
-        currentImg = currentImg > 1 ? currentImg - 1 : maxImgs;
-        updateImage();
-      };
-
-      const nextBtn = document.createElement('button');
-      nextBtn.textContent = '>';
-      nextBtn.onclick = () => {
-        currentImg = currentImg < maxImgs ? currentImg + 1 : 1;
-        updateImage();
-      };
+      let currentImg = 1;
+      const maxImgs = 5;
 
       const nav = document.createElement('div');
       nav.className = 'nav-buttons';
-      nav.appendChild(prevBtn);
-      nav.appendChild(nextBtn);
 
-      updateImage();
-      imageContainer.appendChild(mainImg);
-      imageContainer.appendChild(nav);
+      const btnPrev = document.createElement('button');
+      btnPrev.innerHTML = '&lt;';
+      btnPrev.onclick = () => {
+        currentImg = currentImg - 1 < 1 ? maxImgs : currentImg - 1;
+        mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${currentImg}.PNG`;
+      };
+
+      const btnNext = document.createElement('button');
+      btnNext.innerHTML = '&gt;';
+      btnNext.onclick = () => {
+        currentImg = currentImg + 1 > maxImgs ? 1 : currentImg + 1;
+        mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${currentImg}.PNG`;
+      };
+
+      nav.appendChild(btnPrev);
+      nav.appendChild(btnNext);
+      imgContainer.appendChild(nav);
 
       const details = document.createElement('div');
       details.className = 'product-details';
-
-      let descricao = `Modelo <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura.`;
-      let preco = 'R$ 60,00';
-      if (i === 60) {
-        descricao = `Modelo <br> Imagem Real <br> Escala 1/18.`;
-        preco = 'R$ 90,00';
-      }
-
       details.innerHTML = `
         <h2>Produto ${i}</h2>
         <p><strong>Código:</strong> ${index}</p>
@@ -237,31 +252,10 @@
         <p class="price">${preco}</p>
       `;
 
-      product.appendChild(imageContainer);
+      product.appendChild(imgContainer);
       product.appendChild(details);
       catalog.appendChild(product);
     }
   </script>
 </body>
 </html>
-@media (max-width: 768px) {
-  .product {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .product img.main-img {
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-  }
-
-  .product-details {
-    max-width: 100%;
-    padding: 10px 15px;
-  }
-
-  .nav-buttons {
-    justify-content: center;
-  }
-}
