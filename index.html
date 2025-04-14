@@ -289,7 +289,12 @@
     <div class="contact-modal-content">
       <span class="close-contact" onclick="document.getElementById('contactModal').style.display='none'">&times;</span>
       <h2>Enviar Interesses</h2>
-      <form id="contactForm">
+      <form id="contactForm" action="https://formsubmit.co/shakaw3dprint@hotmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Novo interesse - Shakaw 3D Print">
+        <input type="hidden" name="_autoresponse" value="Recebemos seu interesse! Entraremos em contato em breve.">
+        <input type="hidden" name="_template" value="box">
+        <input type="hidden" name="_next" value="https://shakaw67.github.io/Shakaw3DPrint/obrigado.html">
+        
         <label for="name">Nome:</label>
         <input type="text" id="name" name="name" required>
         
@@ -300,7 +305,7 @@
         <input type="tel" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" required>
         
         <label for="message">Mensagem:</label>
-        <textarea id="message" name="message" rows="6" readonly></textarea>
+        <textarea id="message" name="message" rows="6" readonly required></textarea>
         
         <button type="submit">Enviar Interesses</button>
       </form>
@@ -480,33 +485,6 @@
       messageTextarea.value = `Olá, tenho interesse nos seguintes produtos:\n\n${interestText}\n\nPor favor, entre em contato comigo para mais informações.`;
     }
 
-    // Envio do formulário via AJAX
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const formData = new FormData(this);
-      const interestText = document.getElementById('message').value;
-      formData.append('interests', interestText);
-      
-      // Aqui você precisaria ter um arquivo PHP no servidor para processar o envio
-      fetch('enviar_email.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.text())
-      .then(data => {
-        alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
-        document.getElementById('contactModal').style.display = 'none';
-        // Limpa a lista de interesses após o envio
-        interests.length = 0;
-        updateInterestList();
-      })
-      .catch(error => {
-        console.error('Erro:', error);
-        alert('Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente mais tarde.');
-      });
-    });
-
     // Máscara para WhatsApp
     document.getElementById('whatsapp').addEventListener('input', function(e) {
       let value = e.target.value.replace(/\D/g, '');
@@ -520,6 +498,21 @@
       }
       
       e.target.value = value;
+    });
+
+    // Feedback após envio do formulário
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      // Validação adicional do WhatsApp
+      const whatsapp = document.getElementById('whatsapp').value.replace(/\D/g, '');
+      if (whatsapp.length < 11) {
+        alert('Por favor, insira um número de WhatsApp válido com DDD.');
+        e.preventDefault();
+        return;
+      }
+      
+      // Limpa a lista de interesses após o envio
+      interests.length = 0;
+      updateInterestList();
     });
   </script>
 </body>
