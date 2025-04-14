@@ -247,9 +247,27 @@
 
       details.innerHTML = `
   <h2>Código ${i}</h2>
-    <p><strong>Descrição:</strong> ${descricao}</p>
+  <p><strong>Descrição:</strong> ${descricao}</p>
   <p class="price">${preco}</p>
 `;
+
+// Adiciona botão de interesse
+const interestBtn = document.createElement('button');
+interestBtn.textContent = 'Adicionar aos interesses';
+interestBtn.style.marginTop = '10px';
+interestBtn.style.padding = '8px 12px';
+interestBtn.style.backgroundColor = '#0077cc';
+interestBtn.style.color = 'white';
+interestBtn.style.border = 'none';
+interestBtn.style.borderRadius = '5px';
+interestBtn.style.cursor = 'pointer';
+interestBtn.onclick = function () {
+  addToInterests(i, descricao, preco, mainImg.src);
+  interestBtn.textContent = 'Adicionado!';
+  interestBtn.disabled = true;
+};
+
+details.appendChild(interestBtn);
 
 // Só adiciona o container de miniaturas se ele tiver pelo menos uma imagem válida
 setTimeout(() => {
@@ -271,3 +289,22 @@ setTimeout(() => {
   </script>
 </body>
 </html>
+
+<script>
+  function addToInterests(id, descricao, preco, imagem) {
+    const item = {
+      id,
+      descricao,
+      preco,
+      imagem
+    };
+
+    let interesses = JSON.parse(localStorage.getItem('interesses')) || [];
+
+    const jaExiste = interesses.some(p => p.id === id);
+    if (!jaExiste) {
+      interesses.push(item);
+      localStorage.setItem('interesses', JSON.stringify(interesses));
+    }
+  }
+</script>
