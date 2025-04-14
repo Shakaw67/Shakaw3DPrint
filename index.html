@@ -244,7 +244,13 @@
         descricao = `Modelo <br> Imagem Real <br> Escala 1/18.`;
         preco = 'R$ 90,00';
       }
-
+function addInterest(item) {
+  if (!interests.includes(item)) {
+    interests.push(item);
+    updateInterestList();
+    alert(`${item} adicionado à lista de interesses.`);
+  }
+}
       details.innerHTML = `
   <h2>Código ${i}</h2>
   <p><strong>Descrição:</strong> ${descricao}</p>
