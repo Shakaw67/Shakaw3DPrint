@@ -315,10 +315,29 @@
     }
 
     // Enviar por e-mail
-    function sendInterests() {
-      if (interests.length === 0) {
-        alert('Adicione itens antes de enviar.');
-        return;
+    function function sendInterests() {
+  if (interests.length === 0) {
+    alert('Adicione itens antes de enviar.');
+    return;
+  }
+
+  const nome = prompt("Digite seu nome:");
+  const emailUsuario = prompt("Digite seu e-mail:");
+  const telefone = prompt("Digite seu telefone:");
+
+  if (!nome || !emailUsuario || !telefone) {
+    alert('Por favor, preencha todos os campos.');
+    return;
+  }
+
+  const email = 'shakaw3dprint@hotmail.com';
+  const subject = encodeURIComponent('Interesse em modelos 3D');
+  const body = encodeURIComponent(
+    `Olá, meu nome é ${nome}.\n\nTenho interesse nos seguintes modelos:\n\n${interests.join('\n')}\n\nMeus contatos:\nE-mail: ${emailUsuario}\nTelefone: ${telefone}\n\nPor favor, entre em contato.`
+  );
+
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+}
       }
 
       const email = 'shakaw3dprint@hotmail.com'; // <-- Substitua pelo seu!
@@ -334,5 +353,5 @@
   <div id="interestPanel" style="display: none; position: fixed; right: 30px; bottom: 80px; background: white; padding: 20px; border-radius: 10px; max-width: 300px; box -shadow: 0 0 10px rgba(0,0,0,0.3); z-index: 1001;"> <h3>Modelos de interesse</h3> <ul id="interestList" style="list-style-type: none; padding: 0;"></ul> <button onclick="sendInterests()" style="margin-top: 10px; padding: 8px 12px; background: #0077cc; color: white; border: none; border-radius: 5px; cursor: pointer;">Enviar lista por e-mail</button>
 </div> <!-- Botão flutuante para abrir/fechar o painel -->
 
-<button onclick="toggleInterestPanel()" style="position: fixed; right: 30px; bottom: 130px; background-color: #009688; color: white; border: none; padding: 14px 18px; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 1001;">📋</button>
+<button onclick="toggleInterestPanel()" style="position: fixed; right: 80px; bottom: 30px; background-color: #009688; color: white; border: none; padding: 14px 18px; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 1001;">📋</button>
 <script> const interests = []; function addToInterests(codigo, descricao, preco, imagem) { const item = `Código ${codigo} - ${preco}`; if (!interests.includes(item)) { interests.push(item); } } </script> </body> </html> ```
