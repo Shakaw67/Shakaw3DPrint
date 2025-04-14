@@ -331,4 +331,8 @@
   </script>
 
   <!-- Painel de interesses -->
-  <div id="interestPanel" style="display: none; position: fixed; right: 30px; bottom: 80px; background: white; padding: 20px; border-radius: 10px; max-width: 300px; box
+  <div id="interestPanel" style="display: none; position: fixed; right: 30px; bottom: 80px; background: white; padding: 20px; border-radius: 10px; max-width: 300px; box -shadow: 0 0 10px rgba(0,0,0,0.3); z-index: 1001;"> <h3>Modelos de interesse</h3> <ul id="interestList" style="list-style-type: none; padding: 0;"></ul> <button onclick="sendInterests()" style="margin-top: 10px; padding: 8px 12px; background: #0077cc; color: white; border: none; border-radius: 5px; cursor: pointer;">Enviar lista por e-mail</button>
+</div> <!-- Botão flutuante para abrir/fechar o painel -->
+
+<button onclick="toggleInterestPanel()" style="position: fixed; right: 30px; bottom: 130px; background-color: #009688; color: white; border: none; padding: 14px 18px; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 1001;">📋</button>
+<script> const interests = []; function addToInterests(codigo, descricao, preco, imagem) { const item = `Código ${codigo} - ${preco}`; if (!interests.includes(item)) { interests.push(item); } } </script> </body> </html> ```
