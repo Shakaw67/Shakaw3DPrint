@@ -201,6 +201,67 @@
       cursor: pointer;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
+    
+    /* Estilos para o modal de contato */
+    .contact-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+    }
+    
+    .contact-modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 500px;
+    }
+    
+    .contact-modal-content h2 {
+      margin-top: 0;
+      color: #0057b7;
+    }
+    
+    .contact-modal-content label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    
+    .contact-modal-content input,
+    .contact-modal-content textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    .contact-modal-content button {
+      background-color: #0057b7;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .contact-modal-content button:hover {
+      background-color: #004494;
+    }
+    
+    .close-contact {
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -215,10 +276,34 @@
 
   <div class="catalog-page" id="catalog"></div>
 
+  <!-- Modal para imagens ampliadas -->
   <div id="imgModal" class="modal">
     <span class="close" onclick="document.getElementById('imgModal').style.display='none'">&times;</span>
     <div class="modal-content">
       <img id="modalImg" src="" alt="Imagem ampliada">
+    </div>
+  </div>
+
+  <!-- Modal para formulário de contato -->
+  <div id="contactModal" class="contact-modal">
+    <div class="contact-modal-content">
+      <span class="close-contact" onclick="document.getElementById('contactModal').style.display='none'">&times;</span>
+      <h2>Enviar Interesses</h2>
+      <form id="contactForm">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="whatsapp">WhatsApp:</label>
+        <input type="tel" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" required>
+        
+        <label for="message">Mensagem:</label>
+        <textarea id="message" name="message" rows="6" readonly></textarea>
+        
+        <button type="submit">Enviar Interesses</button>
+      </form>
     </div>
   </div>
 
@@ -229,7 +314,7 @@
   <div id="interestPanel">
     <h3>Lista de interesses</h3>
     <ul id="interestList"></ul>
-    <button onclick="sendInterests()" style="margin-top: 10px; padding: 8px 12px; background: #0077cc; color: white; border: none; border-radius: 5px; cursor: pointer;">Enviar por e-mail</button>
+    <button onclick="showContactModal()" style="margin-top: 10px; padding: 8px 12px; background: #0077cc; color: white; border: none; border-radius: 5px; cursor: pointer;">Enviar Interesses</button>
   </div>
 
   <!-- Botão flutuante -->
@@ -239,6 +324,7 @@
     const catalog = document.getElementById("catalog");
     const interests = [];
 
+    // Carrega os produtos
     for (let i = 1; i <= 80; i++) {
       const index = i.toString().padStart(2, '0');
 
@@ -333,6 +419,7 @@
       btn.style.display = window.scrollY > 200 ? "block" : "none";
     };
     
+    // Funções para gerenciar interesses
     function addToInterests(codigo, descricao, preco, imagem) {
       interests.push({ codigo, descricao, preco, imagem });
       updateInterestList();
@@ -360,6 +447,9 @@
         `;
         list.appendChild(li);
       });
+      
+      // Atualiza a mensagem no modal de contato
+      updateContactMessage();
     }
 
     function removeInterest(index) {
@@ -372,35 +462,65 @@
       panel.style.display = panel.style.display === "none" ? "block" : "none";
     }
 
-    function sendInterests() {
-      const formWindow = window.open('', '_blank');
-      const interestText = interests.map(item => 
-        `Código ${item.codigo}
-        Descrição: ${item.descricao.replace(/<br>/g, '\n')}
-        Preço: ${item.preco}`
-      ).join('\n\n');
-
-      const html = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Formulário de Interesse</title>
-        </head>
-        <body>
-          <h2>Formulário de interesse</h2>
-          <form action="mailto:shakaw3dprint@hotmail.com" method="POST" enctype="text/plain">
-            <label>Nome:</label><br><input type="text" name="Nome" required><br><br>
-            <label>E-mail:</label><br><input type="email" name="Email" required><br><br>
-            <label>Mensagem:</label><br><textarea name="Mensagem" rows="10" cols="40">${interestText}</textarea><br><br>
-            <button type="submit">Enviar</button>
-          </form>
-        </body>
-        </html>
-      `;
-
-      formWindow.document.write(html);
-      formWindow.document.close();
+    function showContactModal() {
+      if (interests.length === 0) {
+        alert('Por favor, adicione itens de interesse antes de enviar.');
+        return;
+      }
+      
+      document.getElementById('contactModal').style.display = 'block';
     }
+
+    function updateContactMessage() {
+      const messageTextarea = document.getElementById('message');
+      const interestText = interests.map(item => 
+        `Código: ${item.codigo}\nDescrição: ${item.descricao.replace(/<br>/g, '\n')}\nPreço: ${item.preco}\n`
+      ).join('\n');
+      
+      messageTextarea.value = `Olá, tenho interesse nos seguintes produtos:\n\n${interestText}\n\nPor favor, entre em contato comigo para mais informações.`;
+    }
+
+    // Envio do formulário via AJAX
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const interestText = document.getElementById('message').value;
+      formData.append('interests', interestText);
+      
+      // Aqui você precisaria ter um arquivo PHP no servidor para processar o envio
+      fetch('enviar_email.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+        document.getElementById('contactModal').style.display = 'none';
+        // Limpa a lista de interesses após o envio
+        interests.length = 0;
+        updateInterestList();
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+        alert('Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente mais tarde.');
+      });
+    });
+
+    // Máscara para WhatsApp
+    document.getElementById('whatsapp').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 11) value = value.substring(0, 11);
+      
+      if (value.length > 0) {
+        value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+        if (value.length > 10) {
+          value = value.replace(/(\d{5})(\d)/, '$1-$2');
+        }
+      }
+      
+      e.target.value = value;
+    });
   </script>
 </body>
 </html>
