@@ -286,6 +286,51 @@ setTimeout(() => {
     window.onscroll = function() {
       btn.style.display = window.scrollY > 200 ? "block" : "none";
     };
+    // Lista de interesses (memória temporária)
+const interests = [];
+
+// Alternar visibilidade do painel
+function toggleInterestPanel() {
+  const panel = document.getElementById('interestPanel');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  updateInterestList();
+}
+
+// Atualizar visualização da lista
+function updateInterestList() {
+  const list = document.getElementById('interestList');
+  list.innerHTML = '';
+  if (interests.length === 0) {
+    list.innerHTML = '<li style="color: gray;">Nenhum item adicionado.</li>';
+    return;
+  }
+  interests.forEach((item, index) => {
+    const li = document.createElement('li');
+    li.innerHTML = `${item} <button onclick="removeInterest(${index})" style="margin-left: 10px; background: red; color: white; border: none; border-radius: 4px; cursor: pointer;">✖</button>`;
+    list.appendChild(li);
+  });
+}
+
+// Remover item da lista
+function removeInterest(index) {
+  interests.splice(index, 1);
+  updateInterestList();
+}
+
+// Enviar por e-mail
+function sendInterests() {
+  if (interests.length === 0) {
+    alert('Adicione itens antes de enviar.');
+    return;
+  }
+
+  const email = 'seu-email@exemplo.com'; // <-- Substitua pelo seu!
+  const subject = encodeURIComponent('Interesse em modelos 3D');
+  const body = encodeURIComponent(`Olá, tenho interesse nos seguintes modelos:\n\n${interests.join('\n')}\n\nPor favor, entre em contato.`);
+
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+}
+
   </script>
   <!-- Painel de interesses -->
 <div id="interestPanel" style="display: none; position: fixed; right: 30px; bottom: 80px; background: white; padding: 20px; border-radius: 10px; max-width: 300px; box-shadow: 0 0 15px rgba(0,0,0,0.3); z-index: 1001;">
