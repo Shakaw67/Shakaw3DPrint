@@ -244,12 +244,6 @@
         descricao = `Modelo <br> Imagem Real <br> Escala 1/18.`;
         preco = 'R$ 90,00';
       }
-function addInterest(item) {
-  if (!interests.includes(item)) {
-    interests.push(item);
-    updateInterestList();
-    alert(`${item} adicionado à lista de interesses.`);
-  }
 }
       details.innerHTML = `
   <h2>Código ${i}</h2>
@@ -293,10 +287,8 @@ setTimeout(() => {
     window.onscroll = function() {
       btn.style.display = window.scrollY > 200 ? "block" : "none";
     };
-    // Lista de interesses (memória temporária)
-const interests = [];
-
-// Alternar visibilidade do painel
+    
+    // Alternar visibilidade do painel
 function toggleInterestPanel() {
   const panel = document.getElementById('interestPanel');
   panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
