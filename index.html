@@ -81,6 +81,14 @@
       flex-wrap: wrap;
       justify-content: flex-start;
     }
+    .thumbnail-container:empty::after {
+      content: "Sem miniaturas adicionais";
+      color: #999;
+      font-size: 12px;
+      padding: 10px;
+      text-align: center;
+      display: block;
+    }
     .thumbnail-container img {
       width: 50px;
       height: 50px;
@@ -266,7 +274,7 @@
 </head>
 <body>
   <div class="header">
-    <img src="https://shakaw67.github.io/Shakaw3DPrint/Logo.PNG" alt="Logo Shakaw 3D Print">
+    <img src="https://shakaw3dprint.github.io/Shakaw_3D_Print/Logo.PNG" alt="Logo Shakaw 3D Print">
     <h1>Shakaw 3D Print</h1>
     <a href="https://www.instagram.com/shakaw3dprint" target="_blank">
       <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" style="width: 20px; vertical-align: middle; margin-right: 6px;">
@@ -293,7 +301,7 @@
         <input type="hidden" name="_subject" value="Novo interesse - Shakaw 3D Print">
         <input type="hidden" name="_autoresponse" value="Recebemos seu interesse! Entraremos em contato em breve.">
         <input type="hidden" name="_template" value="box">
-        <input type="hidden" name="_next" value="https://shakaw67.github.io/Shakaw3DPrint/obrigado.html">
+        <input type="hidden" name="_next" value="https://shakaw3dprint.github.io/Shakaw_3D_Print/obrigado.html">
         
         <label for="name">Nome:</label>
         <input type="text" id="name" name="name" required>
@@ -329,6 +337,60 @@
     const catalog = document.getElementById("catalog");
     const interests = [];
 
+    // Objeto com os preços especiais
+    const precosEspeciais = {
+      44: 'R$ 45,00',
+      45: 'R$ 45,00',
+      46: 'Por favor consultar com vendedor',
+      47: 'Por favor consultar com vendedor',
+      48: 'Por favor consultar com vendedor',
+      60: 'R$ 90,00'
+      // Adicione mais produtos especiais aqui conforme necessário
+    };
+
+    // Objeto com descrições especiais (apenas para produtos que diferem da descrição padrão)
+    const descricoesEspeciais = {
+      01: 'Modelo + Esteira <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura. <br> Observação: Os itens do cenário não acompanham o produto.',
+      02: 'Modelo + 01 Pneu Resina <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura. <br> Observação: Os itens do cenário não acompanham o produto.',
+      09: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      12: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      14: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      15: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      16: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      17: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      18: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      19: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      24: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      25: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      26: 'Modelo + Esteira <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura. <br> Observação: Os itens do cenário não acompanham o produto.',
+      29: 'Modelo + 01 Pneu Resina <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura. <br> Observação: Os itens do cenário não acompanham o produto.',
+      32: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      35: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      36: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      37: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      38: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      41: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      44: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      45: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      46: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      47: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+      48: 'Modelo <br> Imagem Ilustrativa <br> Escala 1/18.',
+            
+      // Adicione mais descrições especiais aqui conforme necessário
+    };
+
+    // Função para verificar se uma imagem existe
+    function checkImageExists(url, callback) {
+      const img = new Image();
+      img.onload = function() {
+        callback(true);
+      };
+      img.onerror = function() {
+        callback(false);
+      };
+      img.src = url;
+    }
+
     // Carrega os produtos
     for (let i = 1; i <= 80; i++) {
       const index = i.toString().padStart(2, '0');
@@ -340,10 +402,10 @@
       imageColumn.className = 'image-column';
 
       const mainImg = document.createElement('img');
-      mainImg.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}.PNG`;
+      mainImg.src = `https://shakaw3dprint.github.io/Shakaw_3D_Print/${index}.png`;
       mainImg.alt = `Produto ${i}`;
       mainImg.className = 'main-img';
-      mainImg.onclick = function () {
+      mainImg.onclick = function() {
         document.getElementById('imgModal').style.display = 'block';
         document.getElementById('modalImg').src = this.src;
       };
@@ -351,36 +413,43 @@
       const thumbnails = document.createElement('div');
       thumbnails.className = 'thumbnail-container';
 
+      // Adiciona a miniatura principal
       const mainThumb = document.createElement('img');
       mainThumb.src = mainImg.src;
       mainThumb.alt = `Produto ${i} ângulo 0`;
-      mainThumb.onclick = function () {
+      mainThumb.onclick = function() {
         mainImg.src = this.src;
       };
       thumbnails.appendChild(mainThumb);
 
+      // Verifica e adiciona miniaturas adicionais
       for (let j = 1; j <= 5; j++) {
-        const thumb = document.createElement('img');
-        thumb.src = `https://shakaw67.github.io/Shakaw3DPrint/${index}_${j}.PNG`;
-        thumb.alt = `Produto ${i} ângulo ${j}`;
-        thumb.onerror = function () { this.remove(); };
-        thumb.onclick = function () {
-          mainImg.src = this.src;
-        };
-        thumbnails.appendChild(thumb);
+        const thumbUrl = `https://shakaw3dprint.github.io/Shakaw_3D_Print/${index}_${j}.png`;
+        
+        checkImageExists(thumbUrl, function(exists) {
+          if (exists) {
+            const thumb = document.createElement('img');
+            thumb.src = thumbUrl;
+            thumb.alt = `Produto ${i} ângulo ${j}`;
+            thumb.onclick = function() {
+              mainImg.src = this.src;
+            };
+            thumbnails.appendChild(thumb);
+          }
+        });
       }
 
       imageColumn.appendChild(mainImg);
+      imageColumn.appendChild(thumbnails);
 
       const details = document.createElement('div');
       details.className = 'product-details';
 
-      let descricao = 'Modelo <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura.';
-      let preco = 'R$ 60,00';
-      if (i === 60) {
-        descricao = 'Modelo <br> Imagem Real <br> Escala 1/18.';
-        preco = 'R$ 90,00';
-      }
+      // Define descrição e preço usando os objetos de mapeamento
+      let descricao = descricoesEspeciais[i] || 
+        'Modelo <br> Imagem Real <br> Escala 1/18. Tamanho entre 8cm e 11cm de altura. <br> Observação: Os itens do cenário não acompanham o produto.';
+      
+      let preco = precosEspeciais[i] || 'R$ 60,00'; // Valor padrão
 
       details.innerHTML = `
         <h2>Código ${i}</h2>
@@ -398,20 +467,13 @@
       interestBtn.style.border = 'none';
       interestBtn.style.borderRadius = '5px';
       interestBtn.style.cursor = 'pointer';
-      interestBtn.onclick = function () {
+      interestBtn.onclick = function() {
         addToInterests(i, descricao, preco, mainImg.src);
         interestBtn.textContent = 'Adicionado!';
         interestBtn.disabled = true;
       };
 
       details.appendChild(interestBtn);
-
-      // Só adiciona o container de miniaturas se ele tiver pelo menos uma imagem válida
-      setTimeout(() => {
-        if (thumbnails.children.length > 0) {
-          imageColumn.appendChild(thumbnails);
-        }
-      }, 0);
 
       product.appendChild(imageColumn);
       product.appendChild(details);
